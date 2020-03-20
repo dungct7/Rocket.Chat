@@ -104,7 +104,7 @@ API.v1.addRoute('users.getAvatar', { authRequired: false }, {
 	get() {
 		const user = this.getUserFromParams();
 
-		const url = getURL(`/avatar/${user.username}`, { cdn: false, full: true });
+		const url = getURL(`/avatar/${ user.username }`, { cdn: false, full: true });
 		this.response.setHeader('Location', url);
 
 		return {

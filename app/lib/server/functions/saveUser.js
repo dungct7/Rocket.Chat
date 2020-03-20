@@ -9,10 +9,10 @@ import * as Mailer from '../../../mailer';
 import { getRoles, hasPermission } from '../../../authorization';
 import { settings } from '../../../settings';
 import { passwordPolicy } from '../lib/passwordPolicy';
-import { validateEmailDomain } from '../lib';
 
 import { checkEmailAvailability, checkUsernameAvailability, setUserAvatar, setEmail, setRealName, setUsername, setStatusText } from '.';
 
+// eslint-disable-next-line no-unused-vars
 let html = '';
 let passwordChangedHtml = '';
 Meteor.startup(() => {
@@ -44,7 +44,7 @@ function _sendUserEmail(subject, html, userData) {
 	try {
 		Mailer.send(email);
 	} catch (error) {
-		throw new Meteor.Error('error-email-send-failed', `Error trying to send email: ${error.message}`, {
+		throw new Meteor.Error('error-email-send-failed', `Error trying to send email: ${ error.message }`, {
 			function: 'RocketChat.saveUser',
 			message: error.message,
 		});
@@ -99,13 +99,13 @@ function validateUserData(userId, userData) {
 	let nameValidation;
 
 	try {
-		nameValidation = new RegExp(`^${settings.get('UTF8_Names_Validation')}$`);
+		nameValidation = new RegExp(`^${ settings.get('UTF8_Names_Validation') }$`);
 	} catch (e) {
 		nameValidation = new RegExp('^[0-9a-zA-Z-_.]+$');
 	}
 
 	if (userData.username && !nameValidation.test(userData.username)) {
-		throw new Meteor.Error('error-input-is-not-a-valid-field', `${_.escape(userData.username)} is not a valid username`, {
+		throw new Meteor.Error('error-input-is-not-a-valid-field', `${ _.escape(userData.username) } is not a valid username`, {
 			method: 'insertOrUpdateUser',
 			input: userData.username,
 			field: 'Username',
@@ -121,14 +121,14 @@ function validateUserData(userId, userData) {
 
 	if (!userData._id) {
 		if (!checkUsernameAvailability(userData.username)) {
-			throw new Meteor.Error('error-field-unavailable', `${_.escape(userData.username)} is already in use :(`, {
+			throw new Meteor.Error('error-field-unavailable', `${ _.escape(userData.username) } is already in use :(`, {
 				method: 'insertOrUpdateUser',
 				field: userData.username,
 			});
 		}
 
 		if (userData.email && !checkEmailAvailability(userData.email)) {
-			throw new Meteor.Error('error-field-unavailable', `${_.escape(userData.email)} is already in use :(`, {
+			throw new Meteor.Error('error-field-unavailable', `${ _.escape(userData.email) } is already in use :(`, {
 				method: 'insertOrUpdateUser',
 				field: userData.email,
 			});
@@ -192,7 +192,7 @@ function validateUserEditing(userId, userData) {
 	}
 }
 
-export const saveUser = function (userId, userData) {
+export const saveUser = function(userId, userData) {
 	validateUserData(userId, userData);
 	let sendPassword = false;
 

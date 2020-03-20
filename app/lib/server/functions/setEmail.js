@@ -3,7 +3,7 @@ import s from 'underscore.string';
 
 import { Users } from '../../../models';
 import { hasPermission } from '../../../authorization';
-import { RateLimiter, validateEmailDomain } from '../lib';
+import { RateLimiter } from '../lib';
 import * as Mailer from '../../../mailer';
 import { settings } from '../../../settings';
 
@@ -16,7 +16,7 @@ Meteor.startup(() => {
 	});
 });
 
-const _sendEmailChangeNotification = function (to, newEmail) {
+const _sendEmailChangeNotification = function(to, newEmail) {
 	const subject = settings.get('Email_Changed_Email_Subject');
 	const email = {
 		to,
@@ -31,14 +31,14 @@ const _sendEmailChangeNotification = function (to, newEmail) {
 	try {
 		Mailer.send(email);
 	} catch (error) {
-		throw new Meteor.Error('error-email-send-failed', `Error trying to send email: ${error.message}`, {
+		throw new Meteor.Error('error-email-send-failed', `Error trying to send email: ${ error.message }`, {
 			function: 'setEmail',
 			message: error.message,
 		});
 	}
 };
 
-const _setEmail = function (userId, email, shouldSendVerificationEmail = true) {
+const _setEmail = function(userId, email, shouldSendVerificationEmail = true) {
 	email = s.trim(email);
 	if (!userId) {
 		throw new Meteor.Error('error-invalid-user', 'Invalid user', { function: '_setEmail' });
@@ -59,7 +59,7 @@ const _setEmail = function (userId, email, shouldSendVerificationEmail = true) {
 
 	// Check email availability
 	if (!checkEmailAvailability(email)) {
-		throw new Meteor.Error('error-field-unavailable', `${email} is already in use :(`, { function: '_setEmail', field: email });
+		throw new Meteor.Error('error-field-unavailable', `${ email } is already in use :(`, { function: '_setEmail', field: email });
 	}
 
 	const oldEmail = user.emails && user.emails[0];

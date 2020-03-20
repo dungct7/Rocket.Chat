@@ -4,7 +4,7 @@ import s from 'underscore.string';
 import { Base } from './_Base';
 import Messages from './Messages';
 import Subscriptions from './Subscriptions';
-import { getValidRoomName } from '../../../utils';
+// import { getValidRoomName } from '../../../utils';
 
 export class Rooms extends Base {
 	constructor(...args) {
@@ -113,7 +113,7 @@ export class Rooms extends Base {
 	setLastMessageSnippeted(roomId, message, snippetName, snippetedBy, snippeted, snippetedAt) {
 		const query = { _id: roomId };
 
-		const msg = `\`\`\`${message.msg}\`\`\``;
+		const msg = `\`\`\`${ message.msg }\`\`\``;
 
 		const update = {
 			$set: {
@@ -203,7 +203,7 @@ export class Rooms extends Base {
 		return this.update(query, update);
 	}
 
-	setAllowReactingWhenReadOnlyById = function (_id, allowReacting) {
+	setAllowReactingWhenReadOnlyById = function(_id, allowReacting) {
 		const query = {
 			_id,
 		};
@@ -215,7 +215,7 @@ export class Rooms extends Base {
 		return this.update(query, update);
 	}
 
-	setSystemMessagesById = function (_id, systemMessages) {
+	setSystemMessagesById = function(_id, systemMessages) {
 		const query = {
 			_id,
 		};
@@ -224,10 +224,10 @@ export class Rooms extends Base {
 				sysMes: systemMessages,
 			},
 		} : {
-				$unset: {
-					sysMes: '',
-				},
-			};
+			$unset: {
+				sysMes: '',
+			},
+		};
 		return this.update(query, update);
 	}
 
@@ -441,7 +441,7 @@ export class Rooms extends Base {
 	}
 
 	findChannelAndPrivateByNameStarting(name, options) {
-		const nameRegex = new RegExp(`^${s.trim(s.escapeRegExp(name))}`, 'i');
+		const nameRegex = new RegExp(`^${ s.trim(s.escapeRegExp(name)) }`, 'i');
 
 		const query = {
 			t: {
@@ -675,10 +675,10 @@ export class Rooms extends Base {
 				lastMessage,
 			},
 		} : {
-				$unset: {
-					lastMessage: 1,
-				},
-			};
+			$unset: {
+				lastMessage: 1,
+			},
+		};
 
 		return this.update(query, update);
 	}
@@ -995,7 +995,7 @@ export class Rooms extends Base {
 	// ############################
 	// Discussion
 	findDiscussionParentByNameStarting(name, options) {
-		const nameRegex = new RegExp(`^${s.trim(s.escapeRegExp(name))}`, 'i');
+		const nameRegex = new RegExp(`^${ s.trim(s.escapeRegExp(name)) }`, 'i');
 
 		const query = {
 			t: {

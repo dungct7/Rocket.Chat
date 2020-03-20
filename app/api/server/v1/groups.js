@@ -13,6 +13,7 @@ function findPrivateGroupByIdOrName({ params, userId, checkedArchived = true }) 
 		throw new Meteor.Error('error-room-param-not-provided', 'The parameter "roomId" or "roomName" is required');
 	}
 
+	// eslint-disable-next-line no-unused-vars
 	const roomOptions = {
 		fields: {
 			t: 1,
@@ -39,7 +40,7 @@ function findPrivateGroupByIdOrName({ params, userId, checkedArchived = true }) 
 	const roomName = room.prid ? room.fname : room.name;
 
 	if (checkedArchived && room.archived) {
-		throw new Meteor.Error('error-room-archived', `The private group, ${roomName}, is archived`);
+		throw new Meteor.Error('error-room-archived', `The private group, ${ roomName }, is archived`);
 	}
 
 	const sub = Subscriptions.findOneByRoomIdAndUserId(room._id, userId, { fields: { open: 1 } });
@@ -124,7 +125,7 @@ API.v1.addRoute('groups.close', { authRequired: true }, {
 		const findResult = findPrivateGroupByIdOrName({ params: this.requestParams(), userId: this.userId, checkedArchived: false });
 
 		if (!findResult.open) {
-			return API.v1.failure(`The private group, ${findResult.name}, is already closed to the sender`);
+			return API.v1.failure(`The private group, ${ findResult.name }, is already closed to the sender`);
 		}
 
 		Meteor.runAsUser(this.userId, () => {
@@ -164,7 +165,7 @@ API.v1.addRoute('groups.counters', { authRequired: true }, {
 		}
 
 		if (room.archived) {
-			throw new Meteor.Error('error-room-archived', `The private group, ${room.name}, is archived`);
+			throw new Meteor.Error('error-room-archived', `The private group, ${ room.name }, is archived`);
 		}
 
 		if (params.userId) {
@@ -294,7 +295,7 @@ API.v1.addRoute('groups.getIntegrations', { authRequired: true }, {
 			includeAllPrivateGroups = this.queryParams.includeAllPrivateGroups === 'true';
 		}
 
-		const channelsToSearch = [`#${findResult.name}`];
+		const channelsToSearch = [`#${ findResult.name }`];
 		if (includeAllPrivateGroups) {
 			channelsToSearch.push('all_private_groups');
 		}
@@ -576,7 +577,7 @@ API.v1.addRoute('groups.open', { authRequired: true }, {
 		const findResult = findPrivateGroupByIdOrName({ params: this.requestParams(), userId: this.userId, checkedArchived: false });
 
 		if (findResult.open) {
-			return API.v1.failure(`The private group, ${findResult.name}, is already open for the sender`);
+			return API.v1.failure(`The private group, ${ findResult.name }, is already open for the sender`);
 		}
 
 		Meteor.runAsUser(this.userId, () => {
