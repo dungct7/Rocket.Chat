@@ -24,7 +24,7 @@ import { findUsersToAutocomplete } from '../lib/users';
 API.v1.addRoute('users.create', { authRequired: true }, {
 	post() {
 		check(this.bodyParams, {
-			email: String,
+			email: String || undefined,
 			name: String,
 			password: String,
 			username: String,
@@ -104,7 +104,7 @@ API.v1.addRoute('users.getAvatar', { authRequired: false }, {
 	get() {
 		const user = this.getUserFromParams();
 
-		const url = getURL(`/avatar/${ user.username }`, { cdn: false, full: true });
+		const url = getURL(`/avatar/${user.username}`, { cdn: false, full: true });
 		this.response.setHeader('Location', url);
 
 		return {

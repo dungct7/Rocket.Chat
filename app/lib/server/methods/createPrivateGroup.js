@@ -7,8 +7,7 @@ import { createRoom } from '../functions';
 Meteor.methods({
 	createPrivateGroup(name, members, readOnly = false, customFields = {}, extraData = {}) {
 		check(name, String);
-		check(members, Match.Optional([String]));
-
+		// check(members, Match.Optional([String]));
 		if (!Meteor.userId()) {
 			throw new Meteor.Error('error-invalid-user', 'Invalid user', { method: 'createPrivateGroup' });
 		}
